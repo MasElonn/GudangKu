@@ -10,4 +10,6 @@ module org.riendra.gudangku {
 
     opens org.riendra.gudangku to javafx.fxml;
     exports org.riendra.gudangku;
+    exports org.riendra.gudangku.Controller;
+    opens org.riendra.gudangku.Controller to javafx.fxml;
 }
