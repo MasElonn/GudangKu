@@ -96,6 +96,7 @@
                     <include>**/*.fxml</include>
                     <include>**/*.css</include>
                     <include>**/*.png</include>
+                    <include>**/*.*</include>
                 </includes>
             </resource>
         </resources>

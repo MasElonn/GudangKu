@@ -21,6 +21,7 @@ public class LoginController {
     private TextField username;
     @FXML
     private PasswordField password;
+
     @FXML
     private void checkCredentials(ActionEvent event) throws IOException{
         if(username.getText().equals(userCred) && password.getText().equals(passCred)){
@@ -36,7 +37,7 @@ public class LoginController {
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         currentStage.close();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/riendra/gudangku/dashboard.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/riendra/gudangku/views/dashboard.fxml"));
         Parent root = loader.load();
 
         Stage newStage = new Stage();
