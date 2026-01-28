@@ -88,13 +88,13 @@ public class Db {
 
         }
     }
-    public void deleteItem(String id){
+    public void deleteItem(int id){
         connect();
         String query = """
-                DELETE FROM items WHERE name = ?
+                DELETE FROM items WHERE id = ?
                 """;
         try(PreparedStatement statement = connection.prepareStatement(query)){
-            statement.setString(1,id);
+            statement.setInt(1, id);
 
             statement.executeUpdate();
 
@@ -104,6 +104,22 @@ public class Db {
 
         }
 
+    }
+    public void updateItem(int id, String name, String category, int quantity, double price){
+        connect();
+        String query = """
+                UPDATE items SET name = ?, category = ?, quantity = ?, price = ? WHERE id = ?
+                """;
+        try(PreparedStatement statement = connection.prepareStatement(query)){
+            statement.setString(1,name);
+            statement.setString(2,category);
+            statement.setInt(3,quantity);
+            statement.setDouble(4,price);
+            statement.setInt(5,id);
+            statement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
 }

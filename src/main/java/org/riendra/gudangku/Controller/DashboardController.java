@@ -16,8 +16,8 @@ import static org.riendra.gudangku.util.TxtFormatter.intFormatter;
 
 
 public class DashboardController {
-    Db db = new Db();
-    String columnNameValue;
+    private Db db = new Db();
+    private Item selectedItem;
 
     @FXML
     Label conLabel;
@@ -34,6 +34,17 @@ public class DashboardController {
     private TableColumn<Item, Double> priceCol;
     @FXML
     private TableColumn<Item, String> updateCol;
+
+    @FXML
+    private Button deleteBtn;
+    @FXML
+    private Button updateBtn;
+    @FXML
+    private Button addBtn;
+    @FXML
+    private Button saveBtn;
+    @FXML
+    private Button cancelBtn;
 
     @FXML
     private TextField txtName;
@@ -66,14 +77,14 @@ public class DashboardController {
         loadData();
         itemTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-
-                columnNameValue = newValue.getName();
-                System.out.println("Selected value: " + columnNameValue);
+                selectedItem = newValue;
+                System.out.println("Selected item: " + selectedItem.getName());
             }
         });
         cBoxCategory.getItems().addAll("Accessories","Electronics");
         txtQuantity.setTextFormatter(intFormatter);
         txtPrice.setTextFormatter(doubleFormatter);
+
 
     }
 
@@ -84,29 +95,88 @@ public class DashboardController {
 
 
     @FXML
-    private void saveBtn(){
-        if (!txtName.getText().isBlank() || !cBoxCategory.getSelectionModel().isEmpty() || !txtQuantity.getText().isBlank() || !txtPrice.getText().isBlank()){
+    private void addBtn() {
+        if (!txtName.getText().isBlank() && !cBoxCategory.getSelectionModel().isEmpty() && !txtQuantity.getText().isBlank() && !txtPrice.getText().isBlank()) {
             db.insertItem(txtName.getText(),
                     cBoxCategory.getValue(),
                     Integer.parseInt(txtQuantity.getText()),
                     Double.parseDouble(txtPrice.getText())
             );
-
+            clearFields();
+            loadData();
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING,"Input Field Cannot Be Empty");
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Input Field Cannot Be Empty");
             alert.showAndWait();
         }
-
-
-        loadData();
     }
 
 
     @FXML
-    private void deleteBtn(){
+    private void deleteBtn() {
+        if (selectedItem == null) {
+            new Alert(Alert.AlertType.WARNING, "Please select an item to delete").showAndWait();
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this item?", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.YES) {
+            db.deleteItem(selectedItem.getId());
+            loadData();
+            clearFields();
+        }
+    }
 
-       db.deleteItem(columnNameValue);
-        loadData();
+    @FXML
+    private void updateBtn() {
+        if (selectedItem == null) {
+            new Alert(Alert.AlertType.WARNING, "Please select an item to update").showAndWait();
+            return;
+        }
+        setEditMode(true);
+        txtName.setText(selectedItem.getName());
+        cBoxCategory.setValue(selectedItem.getCategory());
+        txtQuantity.setText(String.valueOf(selectedItem.getQuantity()));
+        txtPrice.setText(String.valueOf(selectedItem.getPrice()));
+    }
+
+    @FXML
+    private void saveBtn() {
+        if (selectedItem != null) {
+            db.updateItem(
+                    selectedItem.getId(),
+                    txtName.getText(),
+                    cBoxCategory.getValue(),
+                    Integer.parseInt(txtQuantity.getText()),
+                    Double.parseDouble(txtPrice.getText())
+            );
+            loadData();
+            setEditMode(false);
+            clearFields();
+        }
+    }
+
+    @FXML
+    private void cancelBtn() {
+        setEditMode(false);
+        clearFields();
+    }
+
+    private void setEditMode(boolean editing) {
+        addBtn.setDisable(editing);
+        deleteBtn.setDisable(editing);
+        updateBtn.setDisable(editing);
+        saveBtn.setDisable(!editing);
+        cancelBtn.setDisable(!editing);
+        itemTable.setDisable(editing);
+    }
+
+    private void clearFields() {
+        txtName.clear();
+        cBoxCategory.getSelectionModel().clearSelection();
+        txtQuantity.clear();
+        txtPrice.clear();
+        selectedItem = null;
+        itemTable.getSelectionModel().clearSelection();
     }
 
 
