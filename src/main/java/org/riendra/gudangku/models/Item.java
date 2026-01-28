@@ -1,5 +1,7 @@
 package org.riendra.gudangku.models;
 
+import java.text.DecimalFormat;
+
 public class Item {
     private int id;
     private String name;
@@ -51,6 +53,11 @@ public class Item {
 
     public double getPrice() {
         return price;
+    }
+
+    public String getFormattedPrice() {
+        DecimalFormat df = new DecimalFormat("#,##0.00");
+        return df.format(this.price);
     }
 
     public void setPrice(double price) {

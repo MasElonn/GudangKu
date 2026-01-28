@@ -22,17 +22,19 @@ public class LoginController {
     @FXML
     private PasswordField password;
 
+    Stage dashStage = new Stage();
+
     @FXML
     private void checkCredentials(ActionEvent event) throws IOException{
-        if(username.getText().equals(userCred) && password.getText().equals(passCred)){
-            switchToNewWindow(event);
+        if(username.getText().equals(userCred) && password.getText().equals(passCred)){ //Test Checking
+            switchToDashboard(event);
         } else{
             Alert alert = new Alert(Alert.AlertType.WARNING, "Please Use the Correct Credential");
             alert.showAndWait();
         }
     }
     @FXML
-    private void switchToNewWindow(ActionEvent event) throws IOException {
+    private void switchToDashboard(ActionEvent event) throws IOException {
 
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         currentStage.close();
@@ -40,9 +42,9 @@ public class LoginController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/riendra/gudangku/views/dashboard.fxml"));
         Parent root = loader.load();
 
-        Stage newStage = new Stage();
-        newStage.setScene(new Scene(root));
-        newStage.setTitle("New Window");
-        newStage.show();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Dashboard");
+        stage.show();
     }
 }

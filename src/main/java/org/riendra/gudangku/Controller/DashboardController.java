@@ -3,13 +3,19 @@ package org.riendra.gudangku.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.riendra.gudangku.database.Db;
 import org.riendra.gudangku.models.Item;
+
+import java.io.IOException;
 
 import static org.riendra.gudangku.util.TxtFormatter.doubleFormatter;
 import static org.riendra.gudangku.util.TxtFormatter.intFormatter;
@@ -21,7 +27,6 @@ public class DashboardController {
 
     @FXML
     Label conLabel;
-
     @FXML
     private TableView<Item> itemTable;
     @FXML
@@ -45,6 +50,8 @@ public class DashboardController {
     private Button saveBtn;
     @FXML
     private Button cancelBtn;
+    @FXML
+    private Button settingsBtn;
 
     @FXML
     private TextField txtName;
@@ -52,7 +59,6 @@ public class DashboardController {
     private ComboBox<String> cBoxCategory = new ComboBox<>();
     @FXML
     private TextField txtQuantity;
-
     @FXML
     private TextField txtPrice;
 
@@ -66,11 +72,12 @@ public class DashboardController {
             conLabel.setTextFill(Color.GREEN);
         }
 
+
         // Setup columns
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        priceCol.setCellValueFactory(new PropertyValueFactory<>("formattedPrice"));
         updateCol.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
 
         // Load data
@@ -81,7 +88,7 @@ public class DashboardController {
                 System.out.println("Selected item: " + selectedItem.getName());
             }
         });
-        cBoxCategory.getItems().addAll("Accessories","Electronics");
+        cBoxCategory.getItems().addAll("Accessories","Electronics"); //Test Value
         txtQuantity.setTextFormatter(intFormatter);
         txtPrice.setTextFormatter(doubleFormatter);
 
@@ -142,16 +149,21 @@ public class DashboardController {
     @FXML
     private void saveBtn() {
         if (selectedItem != null) {
-            db.updateItem(
-                    selectedItem.getId(),
-                    txtName.getText(),
-                    cBoxCategory.getValue(),
-                    Integer.parseInt(txtQuantity.getText()),
-                    Double.parseDouble(txtPrice.getText())
-            );
-            loadData();
-            setEditMode(false);
-            clearFields();
+            if (!txtName.getText().isBlank() && !txtQuantity.getText().isBlank() && !txtPrice.getText().isBlank()) {
+                db.updateItem(
+                        selectedItem.getId(),
+                        txtName.getText(),
+                        cBoxCategory.getValue(),
+                        Integer.parseInt(txtQuantity.getText()),
+                        Double.parseDouble(txtPrice.getText()));
+                loadData();
+                setEditMode(false);
+                clearFields();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Input Field Cannot Be Empty");
+                alert.showAndWait();
+            }
+
         }
     }
 
@@ -178,7 +190,26 @@ public class DashboardController {
         selectedItem = null;
         itemTable.getSelectionModel().clearSelection();
     }
+    @FXML
+    private void settingsWindow(){
 
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/org/riendra/gudangku/views/settings.fxml"));
+            LoginController lg = new LoginController();
+            Scene scene = new Scene(fxmlLoader.load(), 630, 400);
+            Stage stage = new Stage();
+            stage.setTitle("Settings");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(lg.dashStage);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+    }
 
 
 }
