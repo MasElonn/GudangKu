@@ -1,0 +1,105 @@
+.root {
+    -fx-accent: -amber-glow;
+    -fx-focus-color: -amber-glow;
+    -fx-base: #fdfdfd; /* Soft white */
+    
+    /* JavaFX Lookup Colors */
+    -amber-glow: #fa9f1c;
+    -dark-orange: #f58d19;
+    -harvest-orange: #e47513;
+    -chocolate: #d0630e;
+    -autumn-ember: #bb5008;
+    -rusty-spice: #a54708;
+    -saddle-brown: #833907;
+    -dark-walnut: #612b05;
+    -dark-coffee: #391a04;
+    -coffee-bean: #231205;
+    
+    /* Functional Colors */
+    -soft-white: #fdfdfd;
+    -border-gray: #e0e0e0;
+    -text-main: #231205;
+    -text-muted: #612b05;
+}
+
+/* Layout */
+.side-panel {
+    -fx-background-color: linear-gradient(to bottom right, -amber-glow, -autumn-ember);
+}
+
+.form-panel {
+    -fx-background-color: -soft-white;
+}
+
+/* Branding */
+.brand-logo {
+    -fx-text-fill: white;
+    -fx-font-family: "Poppins";
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.brand-name {
+    -fx-text-fill: white;
+    -fx-font-family: "Poppins";
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 5, 5);
+}
+
+/* Desktop Form Elements */
+.desktop-title {
+    -fx-text-fill: -text-main;
+    -fx-font-family: "Poppins";
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
+}
+
+.desktop-subtitle {
+    -fx-text-fill: -text-muted;
+    -fx-font-family: "Poppins";
+    -fx-font-size: 14px;
+}
+
+.desktop-label {
+    -fx-text-fill: -dark-coffee;
+    -fx-font-family: "Poppins";
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.desktop-input {
+    -fx-background-color: white;
+    -fx-background-radius: 4;
+    -fx-border-color: -border-gray;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-padding: 8 12;
+    -fx-font-family: "Poppins";
+    -fx-text-fill: -text-main;
+}
+
+.desktop-input:focused {
+    -fx-border-color: -amber-glow;
+    -fx-effect: dropshadow(three-pass-box, rgba(250, 159, 28, 0.1), 5, 0, 0, 0);
+}
+
+.desktop-button {
+    -fx-background-color: -amber-glow;
+    -fx-background-radius: 4;
+    -fx-text-fill: white;
+    -fx-font-family: "Poppins";
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.desktop-button:hover {
+    -fx-background-color: -dark-orange;
+    -fx-effect: dropshadow(three-pass-box, rgba(245, 141, 25, 0.2), 8, 0, 0, 4);
+}
+
+.desktop-button:pressed {
+    -fx-background-color: -harvest-orange;
+    -fx-opacity: 0.9;
+}
